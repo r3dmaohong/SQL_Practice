@@ -1,0 +1,16 @@
+-- Show each office city, and the average number of orders per employee per office (without displaying the individual employee average). For example, say office ABC has 2 employees. Employee #1 was responsible for 2 orders, and employee #2 was responsible for 6 orders. Then your result set should show ABC for the first column (city), and 4 for the second column (avg orders per employee per office: (2+6)/2).
+
+WITH employee_orders AS (
+	SELECT e.officeCode
+	, e.employeeNumber
+	, COUNT(o.orderNumber) AS order_count
+	FROM employees e
+	LEFT JOIN customers c ON c.salesRepEmployeeNumber = e.employeeNumber
+	LEFT JOIN orders o ON o.customerNumber = c.customerNumber
+	GROUP BY e.officeCode, e.employeeNumber
+)
+SELECT o.city
+	, AVG(order_count) AS avg_orders
+FROM employee_orders eo
+JOIN offices o ON eo.officeCode = o.officeCode
+GROUP BY o.city

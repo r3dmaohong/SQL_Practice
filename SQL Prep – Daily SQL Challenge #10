@@ -1,0 +1,36 @@
+--Show each customer number, and then the number of orders they have by status type. So you will have a column for customer number, and then one column each for shipped, in process, cancelled, disputed, resolved, and on hold.
+
+
+-- Bad method...
+-- Not complete
+-- Just a sample
+WITH shipped AS(
+ SELECT o.customerNumber,
+     count(1) AS shipped
+ FROM orders o
+ WHERE status = 'shipped'
+ GROUP BY o.customerNumber
+),
+inprocess AS(
+ SELECT o2.customerNumber,
+     count(1) AS in_process
+ FROM orders o2
+ WHERE status = 'in process'
+ GROUP BY o2.customerNumber
+)
+SELECT s.customerNumber, 
+ISNULL(shipped, 0) as shipped, 
+ISNULL(in_process, 0) as 'in process'
+FROM shipped s
+FULL OUTER JOIN inprocess ip ON s.customerNumber = ip.customerNumber
+
+-- Ans
+SELECT customerNumber
+	, SUM(CASE WHEN status = 'shipped' THEN 1 ELSE 0 END) AS shipped
+	, SUM(CASE WHEN status = 'in process' THEN 1 ELSE 0 END) AS 'in process'
+	, SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) AS 'cancelled'
+	, SUM(CASE WHEN status = 'disputed' THEN 1 ELSE 0 END) AS 'disputed'
+	, SUM(CASE WHEN status = 'resolved' THEN 1 ELSE 0 END) AS 'resolved'
+	, SUM(CASE WHEN status = 'on hold' THEN 1 ELSE 0 END) AS 'on hold'
+FROM orders
+GROUP BY customerNumber

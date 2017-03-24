@@ -1,0 +1,26 @@
+-- Show each product line and the number of products in each product line, for all product lines with more than 20 products.
+
+WITH p as(
+    SELECT productline, count(1) as NumOfP
+    FROM products
+    GROUP BY productline
+)
+SELECT * 
+FROM p
+WHERE NumOfP > 20
+
+--- 2
+SELECT productline, count(1) as NumOfP
+FROM products
+GROUP BY productline
+HAVING count(1) > 20
+
+
+--- Ans
+
+SELECT p1.productLine
+	, COUNT(*) AS num_products
+FROM products p
+	JOIN productLines p1 ON p.productLine = p1.productLine
+GROUP BY p1.productLine
+HAVING COUNT(*) > 20

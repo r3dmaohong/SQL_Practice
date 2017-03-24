@@ -1,0 +1,49 @@
+--1
+WITH cte1 AS (
+	SELECT productCode
+		, SUM(quantityOrdered*priceEach) AS totalOrdered
+	FROM orderdetails
+	GROUP BY productCode
+)
+SELECT productName
+	, productDescription
+	, productLine
+FROM products p
+	JOIN cte1 ON cte1.productCode = p.productCode
+WHERE cte1.totalOrdered = 
+	-- Returns max value but with productLine index
+	(SELECT MAX(totalOrdered)
+	FROM cte1
+	JOIN products p2 ON p2.productCode = cte1.productCode
+	-- something like group by?
+	WHERE p2.productLine = p.productLine)
+
+
+	/* multiple with as:
+	WITH a AS(
+	),
+	b AS(
+	)
+	*/
+
+--2
+WITH a AS (
+ SELECT
+     productCode
+  , SUM(quantityOrdered*priceEach) AS totalOrdered
+ FROM orderdetails
+ GROUP BY productCode
+),
+b as (
+SELECT max(totalOrdered) as max_totalOrdered,p.productLine
+FROM a
+INNER JOIN products p on p.productCode = a.productCode
+GROUP BY p.productLine
+)
+SELECT p.productName
+ , p.productDescription
+ , p.productLine
+FROM products p
+INNER JOIN a on a.productCode = p.productCode
+INNER JOIN b on b.max_totalOrdered = a.totalOrdered
+--INNER JOIN b b2 on b2.productLine = p.productLine

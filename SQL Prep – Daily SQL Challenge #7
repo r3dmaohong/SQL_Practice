@@ -1,0 +1,8 @@
+--Show each customer name, along with date of their initial order and their most recent order. Call the initial order 'first_order' and the last one 'last_order'. Also include any customers who have never made an order.
+
+SELECT c.customerName
+	, MIN(orderDate) AS 'first_order'
+	, MAX(orderDate) AS 'last_order'
+FROM customers c
+LEFT JOIN orders o ON c.customerNumber = o.customerNumber
+GROUP BY c.customerName

@@ -1,0 +1,6 @@
+-- @ https://www.sqlprep.com/blog/page/3/
+-- @title Show the product code, product name, and quantity in stock of all products that have a purchase price greater than the average.
+
+SELECT productCode, productName, quantityInStock
+From products
+WHERE buyPrice > (SELECT AVG(buyPrice) FROM products)

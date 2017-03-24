@@ -1,0 +1,15 @@
+-- paste two col as one
+
+SELECT customerName
+	, contactFirstName + ' ' + contactLastName AS 'Contact Name'
+	, country
+FROM customers
+
+-- multiple equality
+
+SELECT customerName AS 'Customer Name'
+, (contactFirstName + ' ' + contactLastName) AS 'Contact Name'
+, country
+FROM customers
+WHERE customers.country in ('FRANCE', 'USA')
+ORDER BY customerName

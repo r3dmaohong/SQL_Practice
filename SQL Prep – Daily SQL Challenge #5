@@ -1,0 +1,11 @@
+-- We need to get some feedback from all of the employees who have sold Harley Davidson Motorcycles. Get a report of the employee first names and emails for all employees who have ever sold a Harley.
+
+-- MEMO: Can't start from employees, because maybe there will be multiple products from one customers.
+
+SELECT DISTINCT e.firstName
+	, e.email
+FROM products p JOIN orderdetails od ON p.productCode = od.productCode
+JOIN orders o ON o.orderNumber = od.orderNumber
+JOIN customers c ON c.customerNumber = o.customerNumber
+JOIN employees e ON e.employeeNumber = c.salesRepEmployeeNumber
+WHERE p.productName LIKE '%Harley%'
