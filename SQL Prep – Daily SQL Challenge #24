@@ -1,0 +1,25 @@
+-- Find the product that has been ordered the most. Show the product name, and how many times it has been ordered.
+
+WITH tmp AS(
+SELECT o.productCode, SUM(o.quantityOrdered) AS times
+FROM orderdetails o
+GROUP BY o.productCode
+)
+SELECT p.productName, tmp.times
+FROM tmp
+LEFT JOIN products p ON p.productCode = tmp.productCode
+WHERE tmp.times = (SELECT MAX(tmp.times) FROM tmp)
+
+-- Ans
+
+WITH total_order_details AS (
+	SELECT	productCode
+		,	SUM(quantityOrdered) AS total_orders
+	FROM orderdetails
+	GROUP BY productCode
+)
+SELECT	p.productName
+	,	tod.total_orders
+FROM products p
+JOIN total_order_details tod ON p.productCode = tod.productCode
+WHERE tod.total_orders = ( SELECT MAX(total_orders) FROM total_order_details );

@@ -1,0 +1,5 @@
+-- CHALLENGE: We want to see what comments our customers are leaving. Show all order comments (leave out the ones where there are no comments).
+
+SELECT comments
+FROM orders
+WHERE comments IS NOT NULL

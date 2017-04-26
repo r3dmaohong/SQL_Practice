@@ -1,0 +1,8 @@
+-- Find a list of invalid employee email addresses.
+
+-- % - The percent sign represents zero, one, or multiple characters
+-- _ - The underscore represents a single character
+
+SELECT email
+FROM employees
+WHERE email NOT LIKE '%_@__%.__%'

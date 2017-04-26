@@ -1,0 +1,25 @@
+--Show a list of all transaction dates, and the combined number of orders and payments made on those days.
+
+WITH tmp AS( 
+( SELECT paymentDate FROM payments ) 
+UNION ALL -- 'UNION' will unique the result, 'UNION ALL' will not. 
+( SELECT orderDate FROM orders ) 
+) 
+SELECT tmp.paymentDate as TDate, COUNT(tmp.paymentDate) 
+FROM tmp GROUP BY tmp.paymentDate
+
+
+-- Ans 
+WITH transactions AS(
+	SELECT	orderDate as transaction_date
+		,	'order' AS transaction_type
+	FROM orders
+	UNION ALL
+	SELECT	paymentDate as transaction_date
+		,	'payment' AS transaction_type
+	FROM payments
+)
+SELECT	transaction_date
+	,	COUNT(*) AS transaction_count
+FROM transactions
+GROUP BY transaction_date;

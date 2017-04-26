@@ -1,0 +1,15 @@
+--We want to create a transaction history for customer # 363 (we consider orders and payments as transactions). Show a list of their customer number, order/payment date, and order/payment amount. So if they made an order on 1/12 and a payment on 1/15, then you would show the 1/12 order on the first row, and the 1/15 payment on the second row. Show their order amounts as negative.
+
+SELECT o.customerNumber
+	, o.orderDate
+	, SUM(od.quantityOrdered*od.priceEach)*(-1) AS subTotal
+FROM orderdetails od
+JOIN orders o ON od.orderNumber = o.orderNumber
+WHERE o.customerNumber = 363
+GROUP BY o.customerNumber, o.orderDate
+UNION -- Just like "rbind" in R.
+SELECT p.customerNumber
+	, p.paymentDate
+	, p.amount
+FROM payments p
+WHERE p.customerNumber = 363

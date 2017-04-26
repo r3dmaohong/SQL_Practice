@@ -1,0 +1,22 @@
+-- CHALLENGE: This is a continuation of challenge #14. To recap, in challenge #14 we want to see a history of orders and payments by customer # 363. This time, we want the same information (customer number, order/payment date, and order/payment amount), but we also want to include a running total of their balance as a fourth column.
+
+
+-- memo
+-- OVER: Doing stuff one by one (by row).
+WITH tmp AS(
+SELECT o.customerNumber
+	, o.orderDate
+	, SUM(od.quantityOrdered*od.priceEach)*(-1) AS subTotal
+FROM orderdetails od
+JOIN orders o ON od.orderNumber = o.orderNumber
+WHERE o.customerNumber = 363
+GROUP BY o.customerNumber, o.orderDate
+UNION -- Just like "rbind" in R.
+SELECT p.customerNumber
+	, p.paymentDate
+	, p.amount
+FROM payments p
+WHERE p.customerNumber = 363
+)
+SELECT *, SUM(subTotal) OVER(ORDER BY tmp.orderDate) AS running_total
+FROM tmp

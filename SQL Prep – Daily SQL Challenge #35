@@ -1,0 +1,23 @@
+-- CHALLENGE: Using the WORLD database, we want to see if there is a correlation between population and life expectancy. Show each country's name, population rank (1 being the highest, and on down from there), life expectancy rank (same), and overall score (population rank + life expectancy rank).
+SELECT name
+	, RANK() OVER (ORDER BY Population DESC) AS p
+	, RANK() OVER (ORDER BY LifeExpectancy DESC) AS l
+	, (RANK() OVER (ORDER BY Population DESC) + RANK() OVER (ORDER BY LifeExpectancy DESC)) as t
+FROM country
+ORDER BY 't'
+
+
+-- Ans
+WITH rank_base AS
+(
+SELECT name
+	, RANK() OVER (ORDER BY population DESC) AS pr
+	, RANK() OVER (ORDER BY LifeExpectancy DESC) AS ler
+FROM country
+)
+SELECT name
+	, pr AS 'Population Rank (DESC)'
+	, ler AS 'Life Expectancy Rank (DESC)'
+	, pr + ler AS 'Total Rank'
+FROM rank_base
+ORDER BY 'Total Rank'

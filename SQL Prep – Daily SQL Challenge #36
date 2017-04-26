@@ -1,0 +1,6 @@
+-- CHALLENGE: Using the WORLD database, I noticed that the United States doesn't have Thai listed as one of their languages. After looking through census data, it shows that 0.3 % of people in the USA speak Thai at home. So let's add it to the list in our query result. Show all information about the languages spoken in the USA, and add a row to your results including Thai as well.
+SELECT * 
+FROM countrylanguage
+WHERE countrycode = 'USA'
+UNION
+SELECT 'USA', 'Thai', 'F', '.3'

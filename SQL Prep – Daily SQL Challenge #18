@@ -1,0 +1,35 @@
+--  Show a list of customer countries, the number of customers from those countries, and the total amount of payments those customers have made.
+
+-- 1
+WITH tmp1 AS(
+    SELECT c.country, COUNT(c.country) AS CofC
+    FROM customers c 
+    GROUP BY country
+),
+tmp2 AS(
+    SELECT c2.country, SUM(p2.amount) AS ttl_Amount 
+    FROM customers c2 
+    LEFT JOIN payments p2 ON c2.customerNumber = p2.customerNumber 
+    GROUP BY country
+)
+SELECT tmp1.country, CofC, ttl_Amount
+FROM tmp1
+LEFT JOIN tmp2 ON tmp1.country=tmp2.country
+WHERE tmp2.ttl_Amount>0
+
+
+-- Ans
+WITH country_totals
+AS
+(
+SELECT country
+	, COUNT(*) AS customer_count
+FROM customers
+GROUP BY country
+)
+SELECT ct.*
+	, SUM(p.amount) AS payment_total
+FROM payments p JOIN customers c ON p.customerNumber = c.customerNumber
+JOIN country_totals ct ON ct.country = c.country
+GROUP BY ct.country, ct.customer_count
+ORDER BY customer_count DESC

@@ -1,0 +1,35 @@
+--Display a percentage of customers who have made orders of more than one product. Please round your answer to 2 decimal places.
+
+WITH tmp AS(
+SELECT c.customerNumber, COUNT(c.customerNumber) cc
+FROM customers c
+LEFT JOIN orders o ON c.customerNumber = o.customerNumber
+LEFT JOIN orderdetails od ON o.orderNumber = od.orderNumber
+GROUP BY c.customerNumber
+)
+SELECT CAST(
+(CAST((SELECT COUNT(tmp.cc) fcount
+FROM tmp
+WHERE tmp.cc>1) AS numeric(36,2)))
+/
+(CAST((SELECT COUNT(tmp.cc) fcount
+FROM tmp) AS numeric(36,2)))
+AS numeric(36,2))
+
+--Ans
+WITH customer_product_information AS (
+	SELECT  c.customerNumber
+		,	od.productCode
+	FROM customers c
+	LEFT JOIN orders o ON c.customerNumber = o.customerNumber
+	LEFT JOIN orderdetails od ON o.orderNumber = od.orderNumber
+)
+, customer_product_aggregation AS (
+	SELECT  customerNumber
+		,	COUNT( DISTINCT productCode ) AS product_count
+		,	CONVERT( DECIMAL(28, 7), CASE WHEN COUNT( DISTINCT productCode ) >= 2 THEN 1 ELSE 0 END ) AS qualified_customer
+	FROM customer_product_information
+	GROUP BY customerNumber
+)
+SELECT  CONVERT( DECIMAL(28, 2), SUM( qualified_customer ) / COUNT(*) ) AS 'Qualified Customer Percentage'
+FROM customer_product_aggregation

@@ -1,0 +1,14 @@
+-- CHALLENGE: Show all order amounts over $60,000. Order them in ascending order.
+
+SELECT SUM(quantityOrdered*priceEach) 
+FROM orderdetails
+GROUP BY orderNumber
+HAVING SUM(quantityOrdered*priceEach) > 60000
+ORDER BY SUM(quantityOrdered*priceEach)
+
+-- Ans
+SELECT DISTINCT SUM(quantityOrdered*priceEach) AS orderPrice
+FROM orderdetails
+GROUP BY orderNumber
+HAVING SUM(quantityOrdered*priceEach) > 60000
+ORDER BY orderPrice

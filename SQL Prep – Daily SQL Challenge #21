@@ -1,0 +1,8 @@
+-- Corporate wants to see if there is any correlation between customer success and local sales reps. To start, we want you to find which customers work with employees in their home state. Show the customer names and states of those that apply.
+
+SELECT	customerName
+	,	c.state
+FROM customers c
+JOIN employees e ON e.employeeNumber = c.salesRepEmployeeNumber
+JOIN offices o ON o.officeCode = e.officeCode
+WHERE o.state = c.state

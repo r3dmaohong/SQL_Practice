@@ -1,0 +1,16 @@
+-- CHALLENGE: Find the number of customers that each management-level (not sales reps) employee is responsible for. This includes customers tied directly to the managers, as well as customers tied to employees that report to the managers. Show the employee name (first and last), their job title, and the number of customers they oversee.
+
+-- ANS
+WITH cust_per_emp AS
+(
+	SELECT e.reportsTo
+		, COUNT(*) cust_count
+	FROM employees e
+	JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
+	GROUP BY e.reportsTo
+)
+SELECT boss.firstName + ' ' + boss.lastName AS employee_name
+	, boss.jobTitle
+	, emp.cust_count
+FROM cust_per_emp emp
+JOIN employees boss ON emp.reportsTo = boss.employeeNumber

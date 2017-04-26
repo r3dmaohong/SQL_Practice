@@ -1,0 +1,4 @@
+-- What is the smallest payment from 2004?
+SELECT MIN(amount)
+FROM payments
+WHERE YEAR(paymentDate) = 2004

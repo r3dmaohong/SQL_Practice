@@ -1,0 +1,6 @@
+-- CHALLENGE: Show all order numbers for orders consisting of only one product.
+
+SELECT orderNumber
+FROM orderdetails
+GROUP BY orderNumber
+HAVING COUNT(productCode) = 1

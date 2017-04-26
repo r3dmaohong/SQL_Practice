@@ -1,0 +1,3 @@
+-- Show a list of all the countries that customers come from.
+SELECT DISTINCT country
+FROM customers

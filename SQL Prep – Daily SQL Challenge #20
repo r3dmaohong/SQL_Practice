@@ -1,0 +1,5 @@
+-- Grab everything from the orders table where the comments include the word difficult.
+
+SELECT *
+FROM orders
+WHERE comments LIKE '%difficult%'

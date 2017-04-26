@@ -1,0 +1,10 @@
+-- Find the average number of days before the required date that shipped orders are shipped. Round to 2 decimal places.
+
+SELECT CAST(AVG(DATEDIFF(d, requiredDate, shippedDate)*1.0)  AS DECIMAL(10,2))
+FROM orders
+WHERE status = 'shipped'
+
+-- Ans
+SELECT CAST(AVG(DATEDIFF(d, requiredDate, shippedDate)*1.0)  AS DECIMAL(10,2))
+FROM orders
+WHERE status = 'shipped'

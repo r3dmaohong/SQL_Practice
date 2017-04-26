@@ -1,0 +1,8 @@
+-- We want to see how many customers our employees are working with. Show a list of employee first and last names (same column), along with the number of customers they are working with.
+
+SELECT (e.firstName + ' ' + e.lastName) AS 'Employee Name'
+	, COUNT(*) AS '# of Customers'
+FROM employees e
+JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
+GROUP BY (e.firstName + ' ' + e.lastName)
+ORDER BY COUNT(*) DESC

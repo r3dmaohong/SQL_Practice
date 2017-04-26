@@ -1,0 +1,14 @@
+-- CHALLENGE: Using the WORLD database, show the number of countries where English is an official language, and then show the number of countries where English is spoken. Display each result in its own column (2 total).
+
+
+SELECT (SELECT COUNT(1)
+FROM countrylanguage
+WHERE Language = 'English' AND isOfficial = 'T'), COUNT(1)
+FROM countrylanguage
+WHERE Language = 'English'
+
+-- Ans
+SELECT (SELECT COUNT(*) FROM countryLanguage WHERE isOfficial = 'T' and Language = 'English') AS official_English_count
+	, COUNT(*) AS total_English_count
+FROM countryLanguage
+WHERE Language = 'English'

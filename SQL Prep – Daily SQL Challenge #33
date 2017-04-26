@@ -1,0 +1,6 @@
+--Show all of the country and countrylanguage information for countries that speak french and have a GNP greater than 10,000.
+
+SELECT *
+FROM country c
+JOIN countrylanguage cl ON c.Code = cl.CountryCode
+WHERE cl.language = 'French' AND c.gnp>10000

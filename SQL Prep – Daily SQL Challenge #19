@@ -1,0 +1,21 @@
+-- Find customers who have a negative balance (amount owed greater than amount paid). Show the customer number and customer name.
+
+-- Ans 
+SELECT	customerNumber
+	,	customerName
+FROM customers c
+WHERE
+(
+	SELECT	SUM(quantityOrdered*priceEach) AS order_subtotal
+	FROM orderdetails od
+	JOIN orders o ON od.orderNumber = o.orderNumber
+	WHERE o.customerNumber = c.customerNumber
+	GROUP BY o.customerNumber
+)
+>
+(
+	SELECT	SUM(p.amount) AS payment_subtotal
+	FROM payments p
+	WHERE p.customerNumber = c.customerNumber
+	GROUP BY p.customerNumber
+)

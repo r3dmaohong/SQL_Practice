@@ -1,0 +1,4 @@
+-- Find dates where both orders and payments were made.
+SELECT DISTINCT o.compare_date
+FROM ( SELECT orderDate AS compare_date FROM orders ) o
+INNER JOIN ( SELECT paymentDate AS compare_date FROM payments ) p ON o.compare_date = p.compare_date

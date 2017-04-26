@@ -1,0 +1,12 @@
+--CHALLENGE: We want a report of employees and orders that are still in the works (not shipped, cancelled, or resolved). Show the employee name (first and last), customer number, order number, and the status of the order.
+
+SELECT e.firstName + ' ' + e.lastName as employee_name
+, c.customerNumber
+	, o.orderNumber
+	, o.status
+FROM employees e
+JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
+JOIN orders o ON o.customerNumber = c.customerNumber
+WHERE status NOT IN ('shipped', 'cancelled', 'resolved')
+-- Not equal : <>
+-- Multiple not equal : NOT IN

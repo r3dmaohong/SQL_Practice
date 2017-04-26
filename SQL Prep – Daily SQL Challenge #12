@@ -1,0 +1,14 @@
+-- We want to make sure the company is taking care of top clients. We need to find our most profitable orders that haven't shipped yet, so that we can give those customers extra attention. 
+-- Find the 5 biggest orders (largest subtotal) that have not shipped yet. Display in a report the employee name, customer name, order number, order subtotal, and status for those 5 largest subtotals.
+
+SELECT TOP 5 e.firstName + ' ' + e.lastName AS employee_name
+	, c.customerNumber
+	, od.orderNumber
+	, (od.quantityOrdered*od.priceEach) AS order_subtotal
+	, o.status
+FROM orderdetails od
+JOIN orders o ON od.orderNumber = o.orderNumber
+JOIN customers c ON c.customerNumber = o.customerNumber
+JOIN employees e ON e.employeeNumber = c.salesRepEmployeeNumber
+WHERE o.status <> 'shipped'
+ORDER BY order_subtotal DESC
